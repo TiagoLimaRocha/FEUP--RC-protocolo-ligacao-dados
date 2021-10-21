@@ -12,7 +12,7 @@ SRC := $(wildcard src/**/**/**/**/*.c) $(wildcard src/**/**/**/*.c) $(wildcard s
 OBJ := $(patsubst %.c,$(BUILD_PATH)/%.o,$(SRC))
 
 #Executable Name
-EXEC = RC_LAB1
+EXEC = RC_LAB1_APP
 
 all: $(EXEC)
 
