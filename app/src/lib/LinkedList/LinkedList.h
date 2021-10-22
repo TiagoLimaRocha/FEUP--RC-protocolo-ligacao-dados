@@ -5,14 +5,13 @@
 #include <string.h>
 
 typedef struct Ht_item Ht_item;
+typedef struct LinkedList LinkedList;
 
 struct Ht_item
 {
   char *key;
   char *value;
 };
-
-typedef struct LinkedList LinkedList;
 
 struct LinkedList
 {

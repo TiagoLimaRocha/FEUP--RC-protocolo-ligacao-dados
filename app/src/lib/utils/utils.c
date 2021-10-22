@@ -55,6 +55,11 @@ int logger(LogType type, LogCode code)
   ht_insert(logTypes, "2", "ERROR");
 
   ht_insert(logMessages, "1", "app.usage.error");
+  ht_insert(logMessages, "2", "bb.create.error");
+  ht_insert(logMessages, "3", "bb.push.error");
+  ht_insert(logMessages, "4", "bb.remove.error");
+  ht_insert(logMessages, "5", "bb.print.empty.warn");
+  ht_insert(logMessages, "6", "bb.free.empty.warn");
   ht_insert(logMessages, "0", "ll.ok.error");
   ht_insert(logMessages, "-1", "ll.general.error");
   ht_insert(logMessages, "-2", "ll.frame_too_small.error");
@@ -63,6 +68,7 @@ int logger(LogType type, LogCode code)
   ht_insert(logMessages, "-5", "ll.bad_bcc1.error");
   ht_insert(logMessages, "-6", "ll.bad_end_flag.error");
 
+  // Cast to string (itoa)
   sprintf(typeStr, "%d", type);
   sprintf(codeStr, "%d", code);
 
@@ -91,8 +97,8 @@ void print_usage(const char *arg)
 {
   printf("Usage:\n");
   printf("%s <file_name> <T|R> <port_number> [options]\n", arg);
-  printf("T - Transmitter, R - Receiver\n");
-  printf("Options:\n");
+  printf("\nT - Transmitter, R - Receiver\n");
+  printf("\nOptions:\n");
   printf("  -timeout=<seconds> \t\tSeconds until a frame is timed out\n");
   printf("  -baudrate=<rate> \t\tSerial port rate\n");
   printf(

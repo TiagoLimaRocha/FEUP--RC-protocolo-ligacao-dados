@@ -6,6 +6,7 @@ unsigned long hash_function(char *str)
   unsigned long i = 0;
   for (int j = 0; str[j]; j++)
     i += str[j];
+
   return i % HT_CAPACITY;
 }
 
@@ -15,6 +16,7 @@ LinkedList **create_overflow_buckets(HashTable *table)
   LinkedList **buckets = (LinkedList **)calloc(table->size, sizeof(LinkedList *));
   for (int i = 0; i < table->size; i++)
     buckets[i] = NULL;
+
   return buckets;
 }
 
@@ -24,6 +26,7 @@ void free_overflow_buckets(HashTable *table)
   LinkedList **buckets = table->overflow_buckets;
   for (int i = 0; i < table->size; i++)
     free_linkedlist(buckets[i]);
+
   free(buckets);
 }
 
@@ -44,11 +47,14 @@ HashTable *create_table(int size)
 {
   // Creates a new HashTable
   HashTable *table = (HashTable *)malloc(sizeof(HashTable));
+
   table->size = size;
   table->count = 0;
   table->items = (Ht_item **)calloc(table->size, sizeof(Ht_item *));
+
   for (int i = 0; i < table->size; i++)
     table->items[i] = NULL;
+
   table->overflow_buckets = create_overflow_buckets(table);
 
   return table;
