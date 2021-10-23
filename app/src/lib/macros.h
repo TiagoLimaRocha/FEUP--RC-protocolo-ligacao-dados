@@ -1,8 +1,6 @@
 #pragma once
 
-/**
- * Options
- */
+// Options
 #define HT_CAPACITY 50000
 #define BUFFER 6042
 
@@ -11,9 +9,7 @@
 #define DEFAULT_BAUDRATE 38400
 #define MAX_FRAGMENT_SIZE 0xFFFF
 
-/**
- * Application Layer
- */
+// Application Layer
 #define MAX_FRAGMENT_SIZE 0xFFFF
 #define MAX_BAUDRATE 460800
 #define DATA_HEADER_SIZE 4
@@ -30,9 +26,7 @@
 
 #define AL_LOG_INFORMATION
 
-/**
- * Link Layer
- */
+// Link Layer
 #define LL_FLAG 0x7E    // Flag for beggining and ending of frame
 #define LL_ESC 0x7D     // Escape character for byte stuffing
 #define LL_ESC_MOD 0x20 // Stuffing byte
@@ -50,7 +44,7 @@
 #define MAX_TRANSMISSION_ATTEMPS 3
 #define TIMEOUT_DURATION 3
 
-/*  Port name prefix */
+// Port name prefix
 #ifdef __linux__
 #define PORT_NAME "/dev/ttyS"
 #elif _WIN32
