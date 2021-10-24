@@ -12,15 +12,17 @@ $ sudo apt install socat
 
 #### Usage:
 
-./RC_LAB1_APP <file_name> <T|R> <port_number> [options]
+``` $ ./RC_LAB1_APP <file_name> <T|R> <port_number> [options]```
 
 T - Transmitter, R - Receiver
 
-Options:
+*Options:*
+```
   -timeout=<seconds>            Seconds until a frame is timed out
   -baudrate=<rate>              Serial port rate
   -max_retries=<retries>        Times a frame transmission can be retried
   -frag_size=<size>             Max size for data fragments
+```
 
 ```
 $ sudo socat -d  -d  PTY,link=/dev/ttyS10,mode=777   PTY,link=/dev/ttyS11,mode=777
