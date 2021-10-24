@@ -82,7 +82,7 @@ int ll_open(int port, LinkType type)
   signal(SIGINT, sig_int_handler);
   afd = open_serial_port(port, type);
   if (afd == -1)
-    return -1;
+    return APP_ERROR_GENERAL;
 
   if (type == TRANSMITTER)
     return ll_open_transmitter(afd);
@@ -102,7 +102,7 @@ int ll_close(int fd)
       logger(ERROR, LL_ERROR_CLOSE_DISCONECT);
       free_byte_buffer(&discFrame);
       close_serial_port(fd);
-      return LL_ERROR_GENERAL;
+      return APP_ERROR_GENERAL;
     }
 
     free_byte_buffer(&discFrame);
@@ -148,7 +148,7 @@ int ll_close(int fd)
   }
 
   close_serial_port(fd);
-  return LL_ERROR_GENERAL;
+  return APP_ERROR_GENERAL;
 }
 
 int ll_write(int fd, char *buffer, int length)
@@ -159,7 +159,7 @@ int ll_write(int fd, char *buffer, int length)
   {
     logger(ERROR, LL_ERROR_WRITE_FAIL);
     free_byte_buffer(&frame);
-    return -1;
+    return APP_ERROR_GENERAL;
   }
 
   int size = frame.size;
@@ -259,7 +259,7 @@ int ll_read(int fd, char **buffer)
     *buffer = (char *)packet.buffer;
     return packet.size;
   }
-  return LL_ERROR_GENERAL;
+  return APP_ERROR_GENERAL;
 }
 
 llInfo ll_info()
@@ -279,7 +279,7 @@ int ll_open_transmitter(int fd)
   if (ll_frame_exchange(fd, &setFrame, LL_UA) == -1)
   {
     free_byte_buffer(&setFrame);
-    return LL_ERROR_GENERAL;
+    return APP_ERROR_GENERAL;
   }
 
   free_byte_buffer(&setFrame);
@@ -311,7 +311,7 @@ int ll_open_receiver(int fd)
     if (ll_send_control_frame(fd, LL_UA) == -1)
     {
       logger(ERROR, LL_ERROR_OPEN_RECEIVER_UA_PACKET_SEND);
-      return LL_ERROR_GENERAL;
+      return APP_ERROR_GENERAL;
     }
 
     logger(INFO, LL_INFO_OPEN_CONNECT);
@@ -398,7 +398,7 @@ int ll_frame_exchange(int fd, ByteBuffer *frame, llControlType reply)
   reset_alarm_handler();
   logger(ERROR, LL_ERROR_FRAME_EXCHANGE_ATTEMPTS_EXCEEDED);
 
-  return LL_ERROR_GENERAL;
+  return APP_ERROR_GENERAL;
 }
 
 int ll_send_control_frame(int fd, llControlType type)
@@ -415,7 +415,7 @@ int ll_send_frame(int fd, ByteBuffer *frame)
   if (write(fd, frame->buffer, frame->size) < 0)
   {
     logger(ERROR, LL_ERROR_SEND_FRAME_WRITE_TO_PORT);
-    return LL_ERROR_GENERAL;
+    return APP_ERROR_GENERAL;
   }
   ll_log_frame(frame, "sent");
   return 0;
@@ -424,7 +424,7 @@ int ll_send_frame(int fd, ByteBuffer *frame)
 int ll_read_frame(int fd, ByteBuffer *frame)
 {
   if (frame == NULL)
-    return LL_ERROR_GENERAL;
+    return APP_ERROR_GENERAL;
 
   create_byte_buffer(frame, CONTROL_FRAME_SIZE);
 
@@ -436,7 +436,7 @@ int ll_read_frame(int fd, ByteBuffer *frame)
   {
     // TODO Implement timeout
     if (was_alarm_triggered())
-      return LL_ERROR_GENERAL;
+      return APP_ERROR_GENERAL;
 
     readStatus = read(fd, &incByte, 1);
   }
@@ -450,7 +450,7 @@ int ll_read_frame(int fd, ByteBuffer *frame)
   while (incByte != LL_FLAG)
   {
     if (was_alarm_triggered())
-      return LL_ERROR_GENERAL;
+      return APP_ERROR_GENERAL;
 
     readStatus = read(fd, &incByte, 1);
     if (readStatus <= 0)
@@ -469,7 +469,7 @@ int ll_read_frame(int fd, ByteBuffer *frame)
   {
     logger(ERROR, LL_ERROR_READ_FRAME_IGNORED);
     ++linkLayerInfo.framesLost;
-    return LL_ERROR_GENERAL;
+    return APP_ERROR_GENERAL;
   }
 
   return EXIT_SUCCESS;
@@ -480,7 +480,7 @@ int ll_validate_control_frame(ByteBuffer *frame)
   if (frame == NULL || frame->buffer == NULL)
   {
     logger(ERROR, LL_ERROR_VALIDATE_CONTROL_FRAME_NULL);
-    return LL_ERROR_GENERAL;
+    return APP_ERROR_GENERAL;
   }
 
   if (frame->size < CONTROL_FRAME_SIZE)
@@ -667,7 +667,7 @@ int open_serial_port(int port, LinkType type)
   if (fd < 0)
   {
     perror(linkLayer.port);
-    return -1;
+    return APP_ERROR_GENERAL;
   }
 
   struct termios newtio;
@@ -677,7 +677,7 @@ int open_serial_port(int port, LinkType type)
     // save current port settings
     perror("tcgetattr");
     close(fd);
-    return -1;
+    return APP_ERROR_GENERAL;
   }
 
   bzero(&newtio, sizeof(newtio));
@@ -699,7 +699,7 @@ int open_serial_port(int port, LinkType type)
   {
     perror("tcsetattr");
     close(fd);
-    return -1;
+    return APP_ERROR_GENERAL;
   }
 
   return fd;

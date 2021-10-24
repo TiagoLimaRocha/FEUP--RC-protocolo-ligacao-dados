@@ -23,6 +23,49 @@ int write_to_file(char *filePath, char *msg)
   return EXIT_SUCCESS;
 }
 
+void print_progress(int done, int total)
+{
+  float percent = ((float)done / (float)total) * 100.0f;
+  int blocks = percent / 10;
+
+  printf("\rProgress ");
+  for (int i = 0; i < blocks; ++i)
+  {
+    printf("#");
+  }
+  printf("[%.2f]", percent);
+  fflush(stdout);
+}
+
+void print_usage(const char *arg)
+{
+  printf("Usage:\n");
+  printf("%s <file_name> <T|R> <port_number> [options]\n", arg);
+  printf("\nT - Transmitter, R - Receiver\n");
+  printf("\nOptions:\n");
+  printf("  -timeout=<seconds> \t\tSeconds until a frame is timed out\n");
+  printf("  -baudrate=<rate> \t\tSerial port rate\n");
+  printf(
+      "  -max_retries=<retries> \tTimes a frame transmission can be "
+      "retried\n");
+  printf("  -frag_size=<size> \t\tMax size for data fragments\n");
+  printf("\nExample: '%s pinguim.gif T 10'\n", arg);
+}
+
+int send_raw_data(int fd, char *buffer, int length)
+{
+  return write(fd, buffer, length);
+}
+
+float clock_seconds_since(struct timeval *startTimer)
+{
+  struct timeval endTimer;
+  gettimeofday(&endTimer, NULL);
+  float elapsed = (endTimer.tv_sec - startTimer->tv_sec);
+  elapsed += (endTimer.tv_usec - startTimer->tv_usec) / 1000000.0f;
+  return elapsed;
+}
+
 char *timestamp()
 {
   time_t currentTime;
@@ -61,6 +104,7 @@ int logger(LogType type, LogCode code)
   ht_insert(logTypes, "1", "WARN");
   ht_insert(logTypes, "2", "ERROR");
 
+  ht_insert(logMessages, "-1", "app.general.error");
   ht_insert(logMessages, "1", "app.usage.error");
   ht_insert(logMessages, "2", "bb.create.error");
   ht_insert(logMessages, "3", "bb.push.error");
@@ -68,7 +112,7 @@ int logger(LogType type, LogCode code)
   ht_insert(logMessages, "5", "bb.print.empty.warn");
   ht_insert(logMessages, "6", "bb.free.empty.warn");
   ht_insert(logMessages, "7", "ll.close.disconect.info");
-  ht_insert(logMessages, "-8", "ll.close.disconect.error");
+  ht_insert(logMessages, "-8", "ll.close.communicate_disconect.error");
   ht_insert(logMessages, "9", "ll.close.frame_ignored.warn");
   ht_insert(logMessages, "-10", "ll.write.error");
   ht_insert(logMessages, "11", "ll.read.frame_ignored.unexpected_SET_control.warn");
@@ -85,14 +129,30 @@ int logger(LogType type, LogCode code)
   ht_insert(logMessages, "-22", "ll.frame_exchange.connection_failed.transmission_attempts_exceeded.error");
   ht_insert(logMessages, "-23", "ll.send_frame.write_frame_to_port.error");
   ht_insert(logMessages, "-24", "ll.read_frame.frame_ignored.header_validation.error");
-  ht_insert(logMessages, "-24", "ll.validate_control_frame.null_frame_or_frame_buffer.error");
-  ht_insert(logMessages, "-1", "ll.general.error");
+  ht_insert(logMessages, "-25", "ll.validate_control_frame.null_frame_or_frame_buffer.error");
   ht_insert(logMessages, "-2", "ll.validate_control_frame.frame_too_small.error");
   ht_insert(logMessages, "-3", "ll.validate_control_frame.bad_start_flag.error");
   ht_insert(logMessages, "-4", "ll.validate_control_frame.bad_address.error");
   ht_insert(logMessages, "-5", "ll.validate_control_frame.bad_bcc1.error");
   ht_insert(logMessages, "-6", "ll.validate_control_frame.bad_end_flag.error");
   ht_insert(logMessages, "-7", "ll.sig.connection_timed_out.warn");
+  ht_insert(logMessages, "-26", "al.send_file.filename_length_exceeded.error");
+  ht_insert(logMessages, "-27", "al.send_file.open_file.error");
+  ht_insert(logMessages, "-28", "al.send_file.connection.error");
+  ht_insert(logMessages, "-29", "al.send_file.transmission.error");
+  ht_insert(logMessages, "30", "al.send_file.file_transmission_done.info");
+  ht_insert(logMessages, "31", "al.receive_file.waiting_for_connection.info");
+  ht_insert(logMessages, "32", "al.receive_file.ignoring_duplicate_data_packet.warn");
+  ht_insert(logMessages, "33", "al.receive_file.file_transmission_over.info");
+  ht_insert(logMessages, "-34", "al.receive_file.connection.error");
+  ht_insert(logMessages, "-35", "al.receive_file.write_selected_file.error");
+  ht_insert(logMessages, "36", "al.receive_file.starting_file_transmission.info");
+  ht_insert(logMessages, "-37", "al.read_data_packet.read_packet.error");
+  ht_insert(logMessages, "-38", "al.read_data_packet.unexpected_control_packet.error");
+  ht_insert(logMessages, "-39", "al.send_control_packet.send_packet.error");
+  ht_insert(logMessages, "40", "al.send_control_packet.control_packet_sent.info");
+  ht_insert(logMessages, "-41", "al.read_control_packet.failed_to_receive_packet.error");
+  ht_insert(logMessages, "-42", "al.parse_control_packet.invalid_control_packet.error");
 
   // Cast to string (itoa)
   sprintf(typeStr, "%d", type);
@@ -117,26 +177,6 @@ int logger(LogType type, LogCode code)
   free_hashtable(logMessages);
 
   return EXIT_SUCCESS;
-}
-
-void print_usage(const char *arg)
-{
-  printf("Usage:\n");
-  printf("%s <file_name> <T|R> <port_number> [options]\n", arg);
-  printf("\nT - Transmitter, R - Receiver\n");
-  printf("\nOptions:\n");
-  printf("  -timeout=<seconds> \t\tSeconds until a frame is timed out\n");
-  printf("  -baudrate=<rate> \t\tSerial port rate\n");
-  printf(
-      "  -max_retries=<retries> \tTimes a frame transmission can be "
-      "retried\n");
-  printf("  -frag_size=<size> \t\tMax size for data fragments\n");
-  printf("\nExample: '%s pinguim.gif T 10'\n", arg);
-}
-
-int send_raw_data(int fd, char *buffer, int length)
-{
-  return write(fd, buffer, length);
 }
 
 int get_termios_baudrate(int baudrate)
