@@ -49,7 +49,7 @@ void print_usage(const char *arg)
       "  -max_retries=<retries> \tTimes a frame transmission can be "
       "retried\n");
   printf("  -frag_size=<size> \t\tMax size for data fragments\n");
-  printf("\nExample: '%s pinguim.gif T 10'\n", arg);
+  printf("\nExample: '%s static/pinguim.gif T 10'\n", arg);
 }
 
 int send_raw_data(int fd, char *buffer, int length)
@@ -153,6 +153,7 @@ int logger(LogType type, LogCode code)
   ht_insert(logMessages, "40", "al.send_control_packet.control_packet_sent.info");
   ht_insert(logMessages, "-41", "al.read_control_packet.failed_to_receive_packet.error");
   ht_insert(logMessages, "-42", "al.parse_control_packet.invalid_control_packet.error");
+  ht_insert(logMessages, "43", "al.send_file.starting_file_transmission.info");
 
   // Cast to string (itoa)
   sprintf(typeStr, "%d", type);

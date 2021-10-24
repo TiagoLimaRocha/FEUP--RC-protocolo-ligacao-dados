@@ -97,7 +97,7 @@ int al_send_file(const char *filename, int port)
 
   struct timeval startTimer;
   gettimeofday(&startTimer, NULL);
-  printf("al: starting file transmission\n");
+  logger(INFO, AL_INFO_SEND_FILE_TRANSMISSION_START);
 
   // Send data packets until the file is read
   DataPacket packet;

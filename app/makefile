@@ -41,48 +41,39 @@ else #linux
 endif
 
 #useful LDFLAGS:
-#-m32 												#Compile x86 binary using x64 gcc
-#-g 													#Generate executable with debug information
+#-m32 												# Compile x86 binary using x64 gcc
+#-g 													# Generate executable with debug information
 #-s 													# Strips executable of debug information
-#-Wl,-subsystem,windows				#Sets windows subsystem, (window mode)
-#-municode 										#Compile unicode often needed by windows api(wWinMain undefined error, etc)
+#-Wl,-subsystem,windows				# Sets windows subsystem, (window mode)
+#-municode 										# Compile unicode often needed by windows api(wWinMain undefined error, etc)
 
 #useful LBLIBS
-#-lpthread																									#Cross-platform multithreading library
-#-ldl																												#Dynamic library loading for linux, mandatory if using dynamic libraries on linux
-#-lSDL2 -lSDL2main -lSDL2_ttf -lSDL2_net -lSDL2_mixer				#Cross-platform low level hardware(graphics, fonts, audio, etc) access library - #define SDL_MAIN_HANDLED if main error
-#-lglfw3																										#Cross-platform library for openGL development
-#-lopengl32 																								#OpenGL cross-platform low level graphics libarary
-#-lole32 -lcomctl32 -loleaut32 -luuid 											#Windows common controls(dialog boxes, etc)
-#-lws2_32 																									#winsock (windows http/udp api)
-#-lfreetype																									#Cross-platform font loading library 
-#-lassimp 																									#Cross-platform model/mesh loading library
-#-lzlib 																										#lz for Linux, data-compression library
-#-lX11																											#Linux graphic interface library, may be needed for graphic applications on linux
+#-lpthread																									# Cross-platform multithreading library
+#-ldl																												# Dynamic library loading for linux, mandatory if using dynamic libraries on linux
+#-lSDL2 -lSDL2main -lSDL2_ttf -lSDL2_net -lSDL2_mixer				# Cross-platform low level hardware(graphics, fonts, audio, etc) access library - #define SDL_MAIN_HANDLED if main error
+#-lglfw3																										# Cross-platform library for openGL development
+#-lopengl32 																								# OpenGL cross-platform low level graphics libarary
+#-lole32 -lcomctl32 -loleaut32 -luuid 											# Windows common controls(dialog boxes, etc)
+#-lws2_32 																									# winsock (windows http/udp api)
+#-lfreetype																									# Cross-platform font loading library 
+#-lassimp 																									# Cross-platform model/mesh loading library
+#-lzlib 																										# lz for Linux, data-compression library
+#-lX11																											# Linux graphic interface library, may be needed for graphic applications on linux
 
 
 #Useful CXXFLAGS:
-#-fsanitize=address 					#Analyze memory leaks (LINUX ONLY)
-#-Wall -Wextra  							#Show compiler warnings
-#-Werror 											#Treat warnings as errors
-#-Wfloat-equal 								#Warning when comparing floats with 0
-#-Wundef 											#Warning if an undefined identifier is evaluated
-#-Wswitch-default 						#Warning if a switch stamentent does not have a default case
-#-Wunreachable-code 					#Warn if the compiler detects code that cannot be reached
-#-Wconversion 								#Warn if conversion may alter value
+#-fsanitize=address 					# Analyze memory leaks (LINUX ONLY)
+#-Wall -Wextra  							# Show compiler warnings
+#-Werror 											# Treat warnings as errors
+#-Wfloat-equal 								# Warning when comparing floats with 0
+#-Wundef 											# Warning if an undefined identifier is evaluated
+#-Wswitch-default 						# Warning if a switch stamentent does not have a default case
+#-Wunreachable-code 					# Warn if the compiler detects code that cannot be reached
+#-Wconversion 								# Warn if conversion may alter value
 
 #Optimization flags
-#-O0 													#Default: No optimization, fastest compile time, recommended for debugging
-#-O1 													#Moderate optimization
-#-O2 													#Performs nearly all supported optimizations
-#-O3 													#Full optimization
-#-Os 													#Optimize for size
-
-
-#MAKE code snippets
-#OS Conditional example:
-#ifdef OS #Windows
-#	do stuff for windows 
-#else #linux
-#	do stuff for linux
-#endif
+#-O0 													# Default: No optimization, fastest compile time, recommended for debugging
+#-O1 													# Moderate optimization
+#-O2 													# Performs nearly all supported optimizations
+#-O3 													# Full optimization
+#-Os 													# Optimize for size

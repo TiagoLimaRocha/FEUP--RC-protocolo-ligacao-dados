@@ -434,7 +434,6 @@ int ll_read_frame(int fd, ByteBuffer *frame)
   // Clear buffer and wait for a flag
   while (readStatus <= 0 || (uchar_t)incByte != LL_FLAG)
   {
-    // TODO Implement timeout
     if (was_alarm_triggered())
       return APP_ERROR_GENERAL;
 
