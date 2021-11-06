@@ -1,5 +1,33 @@
 #include "utils.h"
 
+char *remove_filename_ext(char *myStr)
+{
+  char *retStr;
+  char *lastExt;
+
+  if (myStr == NULL)
+    return NULL;
+
+  if ((retStr = malloc(strlen(myStr) + 1)) == NULL)
+    return NULL;
+
+  strcpy(retStr, myStr);
+  lastExt = strrchr(retStr, '.');
+
+  if (lastExt != NULL)
+    *lastExt = '\0';
+
+  return retStr;
+}
+
+const char *get_filename_ext(const char *filename)
+{
+  const char *dot = strrchr(filename, '.');
+  if (!dot || dot == filename)
+    return "";
+  return dot + 1;
+}
+
 char *my_itoa(const int value, const int bufferSize)
 {
   char *str = malloc(sizeof(char) * bufferSize);

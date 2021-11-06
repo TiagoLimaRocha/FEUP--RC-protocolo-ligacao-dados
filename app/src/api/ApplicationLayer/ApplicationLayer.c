@@ -160,7 +160,10 @@ int al_receive_file(const char *filename, int port)
     return APP_ERROR_GENERAL;
   }
 
-  FILE *fptr = fopen(filename, "w");
+  const char newFilename[BUFFER];
+  sprintf(newFilename, "%s_tr.%s", remove_filename_ext(filename), get_filename_ext(filename));
+
+  FILE *fptr = fopen(newFilename, "w");
   if (fptr == NULL)
   {
     logger(ERROR, AL_ERROR_RECEIVE_FILE_WRITE);
@@ -417,6 +420,7 @@ int al_get_file_info(const char *filename, FILE *fptr)
   // Size
   fseek(fptr, 0L, SEEK_END);
   fileCP.size = ftell(fptr);
+  printf("SIZE al_get_file_info >> %d", fileCP.size);
   rewind(fptr);
 
   // Bytes needed for length
@@ -431,6 +435,5 @@ int al_get_file_info(const char *filename, FILE *fptr)
     else
       break;
   }
-
-  return 0;
+  return EXIT_SUCCESS;
 }

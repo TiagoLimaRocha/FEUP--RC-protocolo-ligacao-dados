@@ -13,6 +13,8 @@
 #include "../macros.h"
 #include "../HashMap/HashMap.h"
 
+const char *get_filename_ext(const char *filename);
+char *remove_filename_ext(char *myStr);
 char *my_itoa(const int value, const int bufferSize);
 void print_usage(const char *arg);
 void print_progress(int done, int total);
