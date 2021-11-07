@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 
   for (int i = 4; i < argc; ++i)
   {
+
     if (!strncmp(argv[i], "-timeout=", 9) && strlen(argv[i]) > 9)
     {
       timeout = atoi(&argv[i][9]);
@@ -50,13 +51,14 @@ int main(int argc, char **argv)
       continue;
     }
 
-    if (!strncmp(argv[i], "-fragSize=", 11) && strlen(argv[i]) > 11)
+    if (!strncmp(argv[i], "-fragSize=", 10) && strlen(argv[i]) > 11)
     {
-      fragSize = atoi(&argv[i][11]);
+      fragSize = atoi(&argv[i][10]);
       continue;
     }
   }
 
+  printf("timeout=%d\nretries=%d\nbaudrate=%d\nfragSize=%d\n", timeout, retries, baudrate, fragSize);
   al_setup(timeout, baudrate, retries, fragSize);
 
   int res;

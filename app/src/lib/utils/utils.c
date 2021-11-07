@@ -76,7 +76,7 @@ void print_usage(const char *arg)
   printf(
       "  -max_retries=<retries> \tTimes a frame transmission can be "
       "retried\n");
-  printf("  -frag_size=<size> \t\tMax size for data fragments\n");
+  printf("  -fragSize=<size> \t\tMax size for data fragments\n");
   printf("\nExample: '%s static/pinguim.gif T 10'\n", arg);
 }
 
