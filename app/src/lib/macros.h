@@ -29,7 +29,8 @@
 #define TLV_NAME_T 0x01 /**!< @brief TLV Byte for file name */
 #define CP_MIN_SIZE 7   /**!< @brief Minimum size in Bytes of the Control Packet */
 
-#define AL_LOG_INFORMATION /**!< @brief Feature flag to long App layer info */
+#define AL_LOG_INFORMATION /**!< @brief Feature flag to log App layer info */
+// #define AL_PRINT_CPACKETS /**!< @brief Feature flag to log control packets read */
 
 // Link Layer
 #define LL_FLAG 0x7E    /**!< @brief Flag for beggining and ending of frame  */
