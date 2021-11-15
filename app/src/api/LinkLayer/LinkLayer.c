@@ -418,7 +418,7 @@ int ll_send_frame(int fd, ByteBuffer *frame)
     return APP_ERROR_GENERAL;
   }
   ll_log_frame(frame, "sent");
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 int ll_read_frame(int fd, ByteBuffer *frame)
@@ -706,6 +706,8 @@ int open_serial_port(int port, LinkType type)
 
 void close_serial_port(int fd)
 {
+  sleep(1);
+
   tcsetattr(fd, TCSANOW, &oldtio);
   close(fd);
 }
