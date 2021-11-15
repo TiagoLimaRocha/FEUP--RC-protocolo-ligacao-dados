@@ -6,7 +6,7 @@
 
 #### Contributors
 - [Tiago Lima Rocha](mailto:up201406679@up.pt)  up201406679
-- [Tiago Azevedo](mailto:upxxxxxxxx@up.pt) upxxxxxxxxx
+- [Pedro Azevedo](mailto:up201603816@up.pt) up201603816
 
 ## Table of Contents
 - [Redes de Computadores](#redes-de-computadores)
