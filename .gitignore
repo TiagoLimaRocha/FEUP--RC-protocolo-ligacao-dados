@@ -1,0 +1,4 @@
+**/.vscode/**
+*.o
+**/RC_LAB1_APP
+**/build/**
