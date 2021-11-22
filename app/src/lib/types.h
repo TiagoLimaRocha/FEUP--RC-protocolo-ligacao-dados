@@ -203,10 +203,15 @@ struct llInfo
 /** @struct LinkLayer
  *  @brief This structure is used to sinalize the beggining and end of file transfer
  * 
- *  @var LinkLayer::framesTotal 
- *  Member 'framesTotal' contains the total amount of frames in the link layer
- *  @var LinkLayer::framesLost
- *  Member 'framesLost' contains the amount of lost frames in the link layer
+ *  @var LinkLayer::port 
+ *  Member 'port' contains the serial port used
+ *  @var LinkLayer::baudrate
+ *  Member 'baudrate' speed of the communication channel
+ *  @var LinkLayer::timeout
+ *  Member 'timeout' max time to receive response 
+ *  @var LinkLayer::transmissionsNo
+ *  Member 'transmissionsNo' max frame size
+ * 
  */
 struct LinkLayer
 {
