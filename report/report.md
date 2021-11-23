@@ -1,14 +1,18 @@
 # Redes de Computadores
 
 ![feuplogo](./assets/feup_logo.jpg)
+
 ## Protocolo de Ligação de Dados
+
 *25 de Novembro de 2021*
 
 #### Contributors
+
 - [Tiago Lima Rocha](mailto:up201406679@up.pt)  up201406679
 - [Pedro Azevedo](mailto:up201603816@up.pt) up201603816
 
 ## Table of Contents
+
 - [Redes de Computadores](#redes-de-computadores)
   - [Protocolo de Ligação de Dados](#protocolo-de-ligação-de-dados)
       - [Contributors](#contributors)
@@ -18,7 +22,9 @@
   - [Code Structure](#code-structure)
   - [Main Use Cases](#main-use-cases)
   - [Link Layer Protocol](#link-layer-protocol)
+  - [Data structures for Link Layer](#data-structures-for-link-layer)
   - [Application Layer Protocol](#application-layer-protocol)
+  - [Data structures for Application Layer](#data-structures-for-application-layer)
   - [Validation](#validation)
   - [Efficiency](#efficiency)
       - [Connection capacity](#connection-capacity)
@@ -26,15 +32,23 @@
       - [FER - Frame Error Ratio](#fer---frame-error-ratio)
   - [Conclusions](#conclusions)
   - [Code](#code)
+    - [main.c](#mainc)
+    - [types.h](#typesh)
+    - [macros.h](#macrosh)
+    - [utils.h and utils.c](#utilsh-and-utilsc)
+    - [HashMap.h and HashMap.c](#hashmaph-and-hashmapc)
+    - [LinkedList.h and LinkedList.c](#linkedlisth-and-linkedlistc)
+    - [ByteBuffer.h and ByteBuffer.c](#bytebufferh-and-bytebufferc)
+    - [ApplicationLayer.h and ApplicationLayer.c](#applicationlayerh-and-applicationlayerc)
+    - [LinkLayer.c and LinkLayer.h](#linklayerc-and-linklayerh)
 
 ## Abstract
 
-In this report we explain our approach and results for the very first lab project in the course Computer Networks. The project consists in the transmission of files using the serial port. 
+In this report we explain our approach and results for the very first lab project in the course Computer Networks. The project consists in the transmission of files using the serial port.
 
 The final goal of this project was to develop and test a low level application for file transfering through a serial port making use of 2 independent layers: the link layer and the application layer.
 
-**Keywords:** *functional blocks and interfaces used in the architecture*, *API, data structures and methods*, *project use cases and function call sequences*, *functional aspects and strategies implemented in the link layer*, *functional aspects and strategies implemented in the link layer*, *validations that were done*, *measurement and analysis of the protocol's efficiency* as well as a *summary of the conclusions we've drawn about the project*
-
+**Keywords:** *framing*, *frame syncronization*, *transparency*, *functional blocks and interfaces used in the architecture*, *API, data structures and methods*, *byte stuffing and destuffing*, *Stop-and-Wait*, *Go-back-N*, *Selective Repeat*, *flux control*, *project use cases and function call sequences*, *functional aspects and strategies implemented in the link and application layers*, *measurement and analysis of the protocol's efficiency*
 
 ## Architecture
 
@@ -48,14 +62,14 @@ Memory management in both these blocks happens with the use of a **dynamic array
 
 The program's **CLI** allows the use of the same executable for both reception and transmission of files by specifying the option in the comand line. Besides that it is necessary to specify the name or path of the file we want to transmit/receive as well as the name of the serial port we want to use for either operation. Moreover, **baudrate**, **max frame size**, **max transmission tries** and **timeout in seconds** are optional parameters in this interface. When the program finishes executing, transmission statistics are shown in the standard output.
 
-
 ## Code Structure
 
 ## Main Use Cases
 
 The **link layer** will have as main use cases to allow for an application to connect a serial port (through **ll_open**), send or receive data framents (**ll_read** and **ll_write**), and shut down the connection (**ll_close**). Moreover it showcases the statistics about the connection itself, in this case total frames sent and frames lost. This layer can be configured with the use of **ll_setup**, making it possible to change the *baudrate*, *max number of tries* and *timout* limit for the transmission.
 
-The **application layer** has  two main use cases: send a file (**al_send_file**, which also uses **ll_write** in its implementation) or receive a file (**al_receive_file**, which uses **ll_read** in its implementaion), and both these methods make use of the functions **ll_open**, **ll_close** form the link layer. This layer can be configured using **al_setup** in which it's possible to change the *max data fragment size*. It also displays the inforation about *average bits per second*, *number of data packets sent*, *transmission duration* and *efficiency*.   
+The **application layer** has  two main use cases: send a file (**al_send_file**, which also uses **ll_write** in its implementation) or receive a file (**al_receive_file**, which uses **ll_read** in its implementaion), and both these methods make use of the functions **ll_open**, **ll_close** form the link layer. This layer can be configured using **al_setup** in which it's possible to change the *max data fragment size*. It also displays the inforation about *average bits per second*, *number of data packets sent*, *transmission duration* and *efficiency*.
+
 ## Link Layer Protocol
 
 The data link protocol begins its flow with the **ll_open** method which starts by opening a connection with the serial port using the supplied configurations. After establishing a connection, the receptor end waits for the transmitter to send a control frame **SET**, and this makes the latter wait for a **UA** control frame response to acknowledge the connection.
@@ -74,7 +88,6 @@ int ll_open(int port, LinkType type);
 ```
 
 After this communication occurs it is then possible to transmit information frames using **ll_write** and **ll_read**. In the **ll_write** function hte header of the data frame is firstly created, and then the data fragments are introduced in the frame on a per byte basis. Simultaneously, the **BCC2** security byte is calculated which gives place for the **byte stuffing** mechanism to take place. Finally, the program verifies if **BCC2** needs **byte stufffing** and introduces it in the frame. When the frame is complete, it is then sent through the serial port, and a response containing the **RR** control frame is awaited. If that response takes longer than the stipulated limit timeframe, or the **RR** frame is a double or if the response is actually a **REJ** frame, a re-transmission must now take place. If the re-transmission limit is surpassed, the operation aborts.
-
 
 In the **ll_read** method we await for a data frame. When said frame arrives, the header must be validated and the data is read byte by byte, using a technique called **byte destuffing** when necessary and calculating the expected **BCC2**. After this process, the **BCC2** is read and compared with the expected one previously calculated. If they match an **RR** control frame is sent. Otherwise, if a problem occurs a control framewith control field **REJ** is sent instead.
 
@@ -160,7 +173,6 @@ struct llInfo
 
 Finally we use a **LinkLayer** struct to store the configuration of the serial port.
 
-
 ```C
 /** @struct LinkLayer
  *  @brief This structure is used to sinalize the beggining and end of file transfer
@@ -184,7 +196,6 @@ struct LinkLayer
   unsigned int transmissionsNo;
 };
 ```
-
 
 ## Application Layer Protocol
 
@@ -223,11 +234,12 @@ int al_send_file(const char *filename, int port);
  */
 int al_receive_file(const char *filename, int port);
 ```
+
 This layer also outputs transmission information.
 
 ## Data structures for Application Layer
 
-For the application layer we use 2 types of structures to build packets to build and send/receive. One for control packets (**ControlPacket**) and one for data packets (**DataPacket**). 
+For the application layer we use 2 types of structures to build packets to build and send/receive. One for control packets (**ControlPacket**) and one for data packets (**DataPacket**).
 
 ```C
 /** @struct ControlPacket
@@ -271,6 +283,7 @@ struct DataPacket
   char *data;
 };
 ```
+
 Similarly to the link layer, we use **alInfo** for the application layer, however it stores additional data such as, **transmission duration**, **number retransmissions**, etc.
 
 ```C
@@ -309,8 +322,6 @@ struct alInfo
   double transmissionDurationSecs;
 };
 ```
-
-
 
 ## Validation
 
@@ -640,6 +651,7 @@ struct LinkLayer
   unsigned int transmissionsNo;
 };
 ```
+
 ### macros.h
 
 ```C
@@ -1617,7 +1629,7 @@ void free_byte_buffer(ByteBuffer *bb)
 }
 ```
 
-### ApplicationLayer.h and ApplicationLayer.c 
+### ApplicationLayer.h and ApplicationLayer.c
 
 ```C
 #pragma once

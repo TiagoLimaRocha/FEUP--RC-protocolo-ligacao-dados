@@ -680,8 +680,13 @@ int open_serial_port(int port, LinkType type)
   }
 
   bzero(&newtio, sizeof(newtio));
+
+  // Mask for input speeds | Character size mask of 8 bits | Ignore modem control lines | Enable receiver
+  // Ignore parity errors 
   newtio.c_cflag = linkLayer.baudrate | CS8 | CLOCAL | CREAD;
   newtio.c_iflag = IGNPAR;
+
+  // Raw output
   newtio.c_oflag = 0;
 
   // set input mode (non-canonical, no echo,...)

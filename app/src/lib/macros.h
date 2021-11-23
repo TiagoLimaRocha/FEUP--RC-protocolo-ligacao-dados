@@ -15,7 +15,7 @@
 #define DEFAULT_BAUDRATE 38400             /**!< @brief Default rate at which information is transferred in a communication channel (b/s) */
 
 // Application Layer
-#define MAX_FRAGMENT_SIZE 0xFFFF /**!< @brief Maximum value for the chunk fragment size to be transferd */
+#define MAX_FRAGMENT_SIZE 0xFFFF /**!< @brief Maximum value for the chunk fragment size to be transfered */
 #define MAX_BAUDRATE 460800      /**!< @brief Maximum rate at which information is transferred in a communication channel (b/s)  */
 #define DATA_HEADER_SIZE 4       /**!< @brief Size in Bytes of the header of the package */
 #define MAX_FILE_NAME 256        /**!< @brief Maximum length of the filename string in chars (Bytes) */
@@ -40,7 +40,9 @@
 #define LL_AF2 0x01     /**!< @brief Transmitter replys, Receiver commands  */
 
 #define FERPROB 20 /**!< @brief File error predefined probability for testing purposes */
-#define FER        /**!< @brief Feature flag for FER testing */
+// #define FER        /**!< @brief Feature flag for FER testing */
+// #define LL_LOG_FRAMES /**!< @brief Feature flag for logging the frames in the link layer */
+// #define LL_LOG_BUFFER /**!< @brief Feature flag for logging the buffer  in ll_read_frame method */
 
 #define _POSIX_SOURCE 1 /**!< @brief POSIX compliant source  */
 
