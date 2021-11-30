@@ -21,7 +21,7 @@ T - Transmitter, R - Receiver
   -timeout=<seconds>            Seconds until a frame is timed out
   -baudrate=<rate>              Serial port rate
   -max_retries=<retries>        Times a frame transmission can be retried
-  -frag_size=<size>             Max size for data fragments
+  -fragSize=<size>             Max size for data fragments
 ```
 
 ```
