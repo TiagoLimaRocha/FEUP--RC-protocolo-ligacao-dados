@@ -246,7 +246,7 @@ int ll_read(int fd, char **buffer)
     unsigned int randomN = rand() % 100;
     if (randomN < FERPROB)
     {
-      send_control_frame(fd, LL_REJ);
+      ll_send_control_frame(fd, LL_REJ);
       free_byte_buffer(&packet);
       free_byte_buffer(&frame);
       continue;

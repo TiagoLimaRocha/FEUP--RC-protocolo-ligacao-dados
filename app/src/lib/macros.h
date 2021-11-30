@@ -39,8 +39,8 @@
 #define LL_AF1 0x03     /**!< @brief Transmitter commands, Receiver replys  */
 #define LL_AF2 0x01     /**!< @brief Transmitter replys, Receiver commands  */
 
-#define FERPROB 20 /**!< @brief File error predefined probability for testing purposes */
-// #define FER        /**!< @brief Feature flag for FER testing */
+#define FERPROB 0 /**!< @brief File error predefined probability for testing purposes */
+#define FER        /**!< @brief Feature flag for FER testing */
 // #define LL_LOG_FRAMES /**!< @brief Feature flag for logging the frames in the link layer */
 // #define LL_LOG_BUFFER /**!< @brief Feature flag for logging the buffer  in ll_read_frame method */
 
