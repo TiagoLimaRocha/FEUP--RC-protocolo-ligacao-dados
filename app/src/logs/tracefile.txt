@@ -444,3 +444,27 @@ Sun Nov  7 11:05:13 2021
  - INFO - ll.close.disconect.info
 Sun Nov  7 11:05:13 2021
  - INFO - ll.close.disconect.info
+Tue Nov 30 21:07:27 2021
+ - INFO - al.receive_file.waiting_for_connection.info
+Tue Nov 30 21:07:27 2021
+ - INFO - ll.open_receiver.waiting_for_connection.info
+Tue Nov 30 21:07:29 2021
+ - INFO - ll.open.connect.info
+Tue Nov 30 21:07:29 2021
+ - INFO - ll.open.connect.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.receive_file.starting_file_transmission.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.send_control_packet.control_packet_sent.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.send_file.starting_file_transmission.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.send_control_packet.control_packet_sent.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.receive_file.file_transmission_over.info
+Tue Nov 30 21:07:29 2021
+ - INFO - al.send_file.file_transmission_done.info
+Tue Nov 30 21:07:29 2021
+ - INFO - ll.close.disconect.info
+Tue Nov 30 21:07:29 2021
+ - INFO - ll.close.disconect.info

@@ -10,6 +10,7 @@
 
 - [Tiago Lima Rocha](mailto:up201406679@up.pt)  up201406679
 - [Pedro Azevedo](mailto:up201603816@up.pt) up201603816
+- []
 
 ## Table of Contents
 
@@ -328,20 +329,34 @@ struct alInfo
 The following test scenarios were implemented in this project:
 
 - Transmission of files with different sizes
-- Interruption of the connection at random moments during transmission
+- Interruption of the connection at random moments during transmission (partially)
 - Introduction of random bits during transmission
 - Simulation of erros in the BCC2 field of the data packets
 - Variation of multiple application parameters such as *baudrate*, *max number of retries*, *timeout* and *frame size*.
 
-## Efficiency
+## Data
 
-#### Connection capacity
+The following graphs were made when transmitting **pinguim.gif** in the lab by changing the FERPROB and defining FER, macros we defined so that the receiver would reject random Packets.
 
-#### Data frame size
+| FERPROB  |  Baudrate (bits/s) | Retransmissions  | Total Time (s)  | Fragment Size  | Received BitRate (bits/s)  | Efficiency  |
+|---|---|---|---|---|---|---|
+| 0%  | 38400  | 0  | 2.90  | 6048  | 30263  | 78.81%   |
+| 10%  | 38400   | 0  | 2.92  | 6048  | 30099  | 78.38%  |
+| 20%  |  38400  | 0  | 2.90  | 6048  | 30269  | 78.82%  |
+| 30%  | 38400   |  1 |  4.19 |  6048 | 20921  |  54.48% |
+| 40%  | 38400   | 0  | 2.90  | 6048  |  30269 | 78.82%  |
+| 50%  | 38400   | 2  | 5.79  |  6048 | 15166  | 39.49  |
 
-#### FER - Frame Error Ratio
+![pingugraph](./assets/ferprobefficiency.jpg)
+
+As we can observe when the FER probability is 40% the efficency goes up again, this however can be explained due to the fact that to transmit the entire file it requires very packets and that the decision of sending the REJ is entirely dependent on random number generation.
 
 ## Conclusions
+
+In this report we describe the implementation of our protocol, the functions we implemented, the tests we made and finaly the results of those same tests. Our project was sucessfully implemented with most packet syncronization, verification and recovery protocols.
+In terms of efficiency, file transmission with no interferance is on average 78%, however when we try to transmit larger files the same thing can not be said,as we noticed slight delays when transmitting.
+In terms of robusteness, aside from some issues of retransmission which may or may not work depending of number of interrupts, we can affirm that our program can handle all other issues that can arise.
+In conclusion, we belive we succeded in implementing most of the protocols, however if we could we would have tried even further to fix the aformentioned issues.
 
 ## Code
 
