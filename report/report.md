@@ -349,7 +349,7 @@ The following graphs were made when transmitting **pinguim.gif** in the lab by c
 
 ![pingugraph](./assets/ferprobefficiency.jpg)
 
-As we can observe when the FER probability is 40% the efficency goes up again, this however can be explained due to the fact that to transmit the entire file it requires very packets and that the decision of sending the REJ is entirely dependent on random number generation.
+As we can observe when the FER probability is 40% the efficency goes up again, this however can be explained due to the fact that to transmit the entire file it requires very few packets and that the decision of sending the REJ is entirely dependent on random number generation.
 
 ## Conclusions
 
