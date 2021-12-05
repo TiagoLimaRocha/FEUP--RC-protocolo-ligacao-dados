@@ -8,9 +8,9 @@
 
 #### Contributors
 
-- [Tiago Lima Rocha](mailto:up201406679@up.pt)  up201406679
-- [Pedro Azevedo](mailto:up201603816@up.pt) up201603816
-- []
+- [Tiago Lima Rocha](mailto:up201406679@edu.fe.up.pt) up201406679
+- [Pedro Azevedo](mailto:up201603816@edu.fe.up.pt) up201603816
+- [José Rodrigues](mailto:up201809590@edu.fc.up.pt) up201809590
 
 ## Table of Contents
 
